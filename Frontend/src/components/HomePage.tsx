@@ -140,7 +140,7 @@ const HomePage: React.FC = () => {
       formData.append("file", file, file.name);
       formData.append("title", title);
 
-      const response = await axios.post(`${API_BASE_URL}/docs/upload`, formData, {
+      await axios.post(`${API_BASE_URL}/docs/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
