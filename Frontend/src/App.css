@@ -1,0 +1,277 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+  padding: 2rem 1rem;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.App-subtitle {
+  margin: 0.5rem 0 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.App-main {
+  flex: 1;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.swagger-container {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.App-footer {
+  background-color: #f8f9fa;
+  color: #666;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+/* 修改 FileUpload 组件的样式 */
+.upload-container {
+  border: 2px dashed #2196f3 !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.upload-container:hover {
+  border-color: #1976d2 !important;
+  background-color: #f8f9fa !important;
+}
+
+.upload-container.dragging {
+  border-color: #1976d2 !important;
+  background-color: #e3f2fd !important;
+}
+
+.upload-container p {
+  margin: 0.5rem 0;
+}
+
+.upload-container p:first-child {
+  font-size: 1.2rem;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 2rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .App-main {
+    padding: 1rem;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.content-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  height: calc(100vh - 300px);
+  min-height: 500px;
+}
+
+.editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #1e1e1e;
+}
+
+.preview-panel {
+  flex: 1;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+.yaml-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.yaml-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #3d3d3d;
+}
+
+.yaml-header h3 {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+.yaml-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.yaml-content {
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+}
+
+.error-message {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background-color: #ffebee;
+  color: #c62828;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.doc-url {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.doc-url p {
+  margin: 0;
+  font-weight: 500;
+  color: #1976d2;
+}
+
+.doc-url a {
+  color: #2196f3;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.doc-url a:hover {
+  text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .content-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .editor-panel,
+  .preview-panel {
+    height: 500px;
+  }
+}
+
+.documents-list {
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.documents-list h3 {
+  margin: 0 0 1rem 0;
+  color: #2196f3;
+}
+
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.document-item {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.document-item h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1976d2;
+}
+
+.document-item p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.document-item a {
+  color: #2196f3;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.document-item a:hover {
+  text-decoration: underline;
+}

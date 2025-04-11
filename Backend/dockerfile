@@ -1,0 +1,25 @@
+# Use official Node.js LTS version as the base image
+FROM node:18
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy only package.json and package-lock.json (if they exist) first
+# This allows Docker to utilize caching to speed up the build process
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the source code into the container
+COPY . .
+
+# If you are using Prisma, perform Prisma-related operations here
+# (Optional) For example, if you need to run prisma generate during build, add:
+RUN npx prisma generate
+
+# Expose port 3000 (assuming your backend listens on port 3000)
+EXPOSE 3000
+
+# Default command: run your backend service
+CMD ["npm", "run", "start"]
