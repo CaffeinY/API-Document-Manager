@@ -31,13 +31,13 @@ API Document Manager is perfect for teams and individual developers who:
 
 ## Tech Stack
 
-Frontend: React, TypeScript
-Backend: Node.js, Express
-Database: PostgreSQL
+- Frontend: React, TypeScript
+- Backend: Node.js, Express
+- Database: PostgreSQL
 
 
 
-## Future TODO
+## Future Work
 1. Online Edit
 2. Login/Register Private Document Mangement
 3. Performance Optimization
