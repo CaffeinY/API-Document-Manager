@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 const { v4: uuidv4 } = require('uuid');
+const {redisClient} = require('../config/redisClient'); 
 
 // Import the PrismaClient instance from the configuration file.
 const prisma = require('../config/db');
@@ -84,15 +85,33 @@ async function getAllDocs() {
  */
 async function getDocById(id) {
   try {
+    const cacheKey = `doc:${id}`;
+
+    // 1. Check Redis cache for the document
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+
+    // 2. If not in cache, query the database for the document
     const doc = await prisma.apiDoc.findUnique({
       where: { id }
     });
+
+    // 3. If the document exists and has a "content" field, convert its JSON content to YAML
     if (doc && doc.content) {
       doc.content = jsonToYaml(doc.content);
     }
+
+    // 4. Cache the document in Redis (if found) with an expiration time of 3600 seconds (1 hour)
+    if (doc) {
+      await redisClient.setEx(cacheKey, 3600, JSON.stringify(doc));
+    }
+
+    // 5. Return the document (or null if not found)
     return doc;
   } catch (err) {
-    console.error('Error in getDocById:', err);
+    console.error('Error in getDocById with Redis caching:', err);
     throw err;
   }
 }

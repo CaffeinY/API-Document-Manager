@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const docsRoutes = require('./routes/docsRoutes');
 const {initializeDatabase} = require('./config/db');
+const { connectRedis } = require('./config/redisClient');
 
 require('dotenv').config();
 
@@ -31,7 +32,11 @@ app.use('/api/docs', docsRoutes);
 const port = process.env.PORT || 3001; // Default to 3000 if PORT is not set
 
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+(async () => {
+  await connectRedis(); 
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+})();
 
