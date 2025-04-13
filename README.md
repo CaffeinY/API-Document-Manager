@@ -1,11 +1,12 @@
 # API Document Manager (ADM)
 
-API Document Manager (ADM) is a modern web application built with React, Node.js, and Swagger UI, designed to manage OpenAPI 3.1 documents with ease. ADM not only allows you to preview and edit OpenAPI specification documents in real time but also streamlines document management compared to traditional online viewers.
+**Version:** v1.1.0
+
+
 
 ## Online DEMO
 
 [Online DEMO](https://api-document-manager.onrender.com/)
-
 
 ## Overview
 
@@ -32,13 +33,12 @@ API Document Manager is perfect for teams and individual developers who:
 ## Tech Stack
 
 - Frontend: React, TypeScript
-- Backend: Node.js, Express
+- Backend: Node.js, Express, Redis
 - Database: PostgreSQL
 
-
-
 ## Future Work
+
 1. Online Edit
-2. Login/Register Private Document Mangement
+2. Login/Register Private Document Management
 3. Performance Optimization
-4. Team Coporation
+4. Team Collaboration
