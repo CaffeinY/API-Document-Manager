@@ -4,7 +4,6 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -15,12 +14,26 @@ generator client {
 }
 
 model ApiDoc {
-  id                String   @id @default(uuid())
-  title             String?  @db.VarChar(255)
-  content           Json?
-  originalFilename  String?  @db.VarChar(255)
-  fileSize          Int?
-  mimeType          String?  @db.VarChar(100)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               String  @id @default(uuid())
+  title            String? @db.VarChar(255)
+  content          Json?
+  originalFilename String? @db.VarChar(255)
+  fileSize         Int?
+  mimeType         String? @db.VarChar(100)
+
+  userId String?
+  owner   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  password String
+  email    String @unique
+
+  createdAt DateTime @default(now())
+  ApiDoc    ApiDoc[]
 }

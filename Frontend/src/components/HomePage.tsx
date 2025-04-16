@@ -17,10 +17,25 @@ const HomePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const checkAuth = async () => {
+    try {
+      // Check if user is authenticated
+      const response = await axios.get(`${API_BASE_URL}/auth/profile`, { withCredentials: true });
+      console.log('User authenticated:', response.data);
+      // If authenticated, fetch documents
+      fetchDocuments();
+    } catch (err) {
+      console.error('User not authenticated:', err);
+      // Redirect to login page if not authenticated
+      navigate('/login');
+    }
+  };
+
+
   // Fetch documents list from backend
   const fetchDocuments = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/docs`);
+      const response = await axios.get(`${API_BASE_URL}/docs`, { withCredentials: true });
       setDocuments(response.data);
       setError(null);
     } catch (err) {
@@ -32,7 +47,7 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchDocuments();
+    checkAuth();
   }, []);
 
   // Format file size in a human readable form
@@ -52,7 +67,7 @@ const HomePage: React.FC = () => {
   // Handler for viewing a document: fetch content and navigate to viewer page
   const handleViewClick = async (doc: Document) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/docs/${doc.id}`);
+      const response = await axios.get(`${API_BASE_URL}/docs/${doc.id}`, { withCredentials: true });
       navigate('/doc/' + doc.id, { 
         state: { 
           spec: response.data.content,
@@ -68,7 +83,7 @@ const HomePage: React.FC = () => {
   // Handler for editing a document: fetch content and navigate to editor page
   const handleEditClick = async (doc: Document) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/docs/${doc.id}`);
+      const response = await axios.get(`${API_BASE_URL}/docs/${doc.id}`, { withCredentials: true });
       navigate('/editor', { 
         state: { 
           yamlContent: response.data.content,
@@ -99,7 +114,7 @@ const HomePage: React.FC = () => {
     const newTitle = window.prompt('Please enter a new title:', doc.title);
     if (newTitle && newTitle !== doc.title) {
       try {
-        await axios.put(`${API_BASE_URL}/docs/${doc.id}`, { title: newTitle });
+        await axios.put(`${API_BASE_URL}/docs/${doc.id}`, { title: newTitle }, { withCredentials: true });
         // Update the local document list state
         setDocuments(prevDocs =>
           prevDocs.map(d => d.id === doc.id ? { ...d, title: newTitle } : d)
@@ -144,6 +159,7 @@ const HomePage: React.FC = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
       alert("Upload successful!");
       fetchDocuments();

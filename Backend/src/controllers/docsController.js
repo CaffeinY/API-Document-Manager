@@ -11,8 +11,9 @@ async function uploadDoc(req, res) {
     }
 
     // Let the service layer handle the parsing and saving logic
-    const docInfo = await docsService.processAndSave(req.file, req.body.title);
+    const docInfo = await docsService.processAndSave(req.file, req.body.title, req.user.id);
     docInfo.content = yaml.dump(docInfo.content);
+
     return res.json({
       message: 'File uploaded and processed successfully',
       doc: docInfo
@@ -26,7 +27,7 @@ async function uploadDoc(req, res) {
 // Retrieve all docs
 async function getAllDocs(req, res) {
   try {
-    const allDocs = await docsService.getAllDocs();
+    const allDocs = await docsService.getAllDocs(req.user.id);
     return res.json(allDocs);
   } catch (error) {
     console.error(error);
@@ -38,7 +39,7 @@ async function getAllDocs(req, res) {
 async function getDocById(req, res) {
   try {
     const { id } = req.params;
-    const doc = await docsService.getDocById(id);
+    const doc = await docsService.getDocById(id, req.user.id);
     if (!doc) {
       return res.status(404).json({ error: 'Doc not found' });
     }
@@ -61,7 +62,7 @@ async function updateDoc(req, res){
     if (!req.file) {
       return res.status(400).json({ error: 'No file was provided' });
     }
-    const updatedDoc = await docsService.updateDoc(req.params.id, req.file);
+    const updatedDoc = await docsService.updateDoc(req.params.id, req.file, req.user.id);
     res.status(200).json(updatedDoc);
   } catch (error) {
     console.error('Error in updateDoc:', error);
@@ -78,7 +79,7 @@ async function updateDoc(req, res){
  */
 async function deleteDoc(req, res){
   try {
-    const deletedDoc = await docsService.deleteDoc(req.params.id);
+    const deletedDoc = await docsService.deleteDoc(req.params.id, req.user.id);
     res.status(200).json(deletedDoc);
   } catch (error) {
     console.error('Error in deleteDoc:', error);
