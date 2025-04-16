@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const { connectRedis } = require('./config/redisClient');
 const session = require('express-session');
 const passport = require('./config/passport');
+const {redisClient} = require('./config/redisClient'); 
 
 
 require('dotenv').config();
@@ -13,7 +14,7 @@ require('dotenv').config();
 // Set up CORS
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://api-document-manager.onrender.com/'
+  'https://api-document-manager.onrender.com'
 ];
 
 // keys to fix the cors cookie issue
@@ -36,6 +37,7 @@ app.use(cors({
 }));
 
 app.use(session({
+  store: redisClient,
   secret: process.env.AUTH_SESSION_SECRET,    
   resave: false,
   saveUninitialized: false,
