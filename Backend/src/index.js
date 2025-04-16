@@ -3,10 +3,17 @@ const app = express();
 const cors = require('cors');
 const docsRoutes = require('./routes/docsRoutes');
 const authRoutes = require('./routes/authRoutes'); 
-const { connectRedis } = require('./config/redisClient');
 const session = require('express-session');
 const passport = require('./config/passport');
-const {redisClient} = require('./config/redisClient'); 
+// const RedisStore = require('connect-redis').default;
+const {RedisStore} = require("connect-redis")
+
+// const RedisStore = connectRedis(session); 
+
+const {redisClient, connectRedisClient } = require('./config/redisClient'); 
+
+
+
 
 
 require('dotenv').config();
@@ -36,13 +43,24 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Connect to Redis
+connectRedisClient();
+
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "USER-COOKIE-SESSION-",
+  ttl: 7 * 24 * 60 * 60 // 1 day in seconds
+})
+
+
+
 app.use(session({
-  store: redisClient,
+  store: redisStore,
   secret: process.env.AUTH_SESSION_SECRET,    
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure:  process.env.NODE_ENV === 'production' ? true : false, // Set to true if using https in production
+    secure:  process.env.NODE_ENV === 'production' ? "true" : "auto", // Set to true if using https in production
     sameSite: process.env.NODE_ENV === 'production' ?  'none' : 'lax',   
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000
@@ -65,8 +83,6 @@ const port = process.env.PORT || 3001; // Default to 3000 if PORT is not set
 
 
 (async () => {
-  await connectRedis(); 
-  const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
