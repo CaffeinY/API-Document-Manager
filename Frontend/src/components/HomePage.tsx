@@ -11,8 +11,17 @@ interface Document {
   fileSize: number;
 }
 
+interface User {
+  id: string;
+  username: string;
+  email: string;
+}
+
 const HomePage: React.FC = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
+
+  const [user, setUser] = useState<User | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -22,6 +31,7 @@ const HomePage: React.FC = () => {
       // Check if user is authenticated
       const response = await axios.get(`${API_BASE_URL}/auth/profile`, { withCredentials: true });
       console.log('User authenticated:', response.data);
+      setUser(response.data.user);
       // If authenticated, fetch documents
       fetchDocuments();
     } catch (err) {
@@ -169,6 +179,19 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/auth/logout`, {}, { withCredentials: true });
+      setUser(null);
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+      setError('Failed to log out');
+    }
+  };
+
+
+
   if (loading) {
     return (
       <div style={{ padding: '20px', textAlign: 'center' }}>
@@ -186,6 +209,20 @@ const HomePage: React.FC = () => {
         marginBottom: '20px'
       }}>
         <h1>OpenAPI Documents</h1>
+        <h2>Welcome back, <span style={{ color: 'blue' }}>{user?.username}</span></h2>
+        <button
+          onClick={handleLogout}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#e53935',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Sign Out
+        </button>
         <button
           onClick={() => handleUploadClick()}
           style={{
