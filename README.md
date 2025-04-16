@@ -1,6 +1,6 @@
 # API Document Manager (ADM)
 
-**Version:** v1.1.0
+**Version:** v1.2.0
 
 
 
@@ -39,6 +39,6 @@ API Document Manager is perfect for teams and individual developers who:
 ## Future Work
 
 1. Online Edit
-2. Login/Register Private Document Management
+2. Login/Register Private Document Management √
 3. Performance Optimization
 4. Team Collaboration

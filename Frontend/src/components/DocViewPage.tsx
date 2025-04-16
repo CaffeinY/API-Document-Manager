@@ -55,7 +55,7 @@ const DocViewPage: React.FC = () => {
     };
 
     fetchDocument();
-  }, [id]);
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
