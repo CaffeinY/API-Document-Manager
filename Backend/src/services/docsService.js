@@ -89,7 +89,7 @@ async function getAllDocs(userId) {
  */
 async function getDocById(id, userId) {
   try {
-    const cacheKey = `doc:${id}`;
+    const cacheKey = `DOC:${id}`;
 
     // Try to read from the Redis cache first.
     const cachedData = await redisClient.get(cacheKey);

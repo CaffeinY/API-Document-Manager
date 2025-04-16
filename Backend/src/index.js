@@ -48,7 +48,7 @@ connectRedisClient();
 
 let redisStore = new RedisStore({
   client: redisClient,
-  prefix: "USER-COOKIE-SESSION-",
+  prefix: "USER-COOKIE-SESSION:",
   ttl: 7 * 24 * 60 * 60 // 1 day in seconds
 })
 
