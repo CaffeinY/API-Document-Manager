@@ -27,7 +27,7 @@ const DocViewPage: React.FC = () => {
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/docs/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/docs/${id}`, {withCredentials: true});
         setDocument(response.data);
 
         // Try to parse the content (assume it's YAML by default, fallback to JSON if it fails)
@@ -37,11 +37,12 @@ const DocViewPage: React.FC = () => {
           parsedSpec = await yaml.load(response.data.content);
           
         } catch (yamlErr) {
-          // If YAML parsing fails, try to use JSON.parse instead
+          console.warn('YAML parsing failed, trying JSON:', yamlErr);
           try {
-            parsedSpec = JSON.parse(document?.content || '');
+            parsedSpec = JSON.parse(response.data.content);
           } catch (jsonErr) {
-            setError('Failed to parse document content. Please check the document format.');
+            console.error('JSON parsing failed:', jsonErr);
+            setError('Failed to parse document content');
             return;
           }
         }
