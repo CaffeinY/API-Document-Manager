@@ -110,7 +110,8 @@ const HomePage: React.FC = () => {
   const handleDeleteClick = async (doc: Document) => {
     if (window.confirm('Are you sure you want to delete this document?')) {
       try {
-        await axios.delete(`${API_BASE_URL}/docs/${doc.id}`);
+        await axios.delete(`${API_BASE_URL}/docs/${doc.id}`, { withCredentials: true });
+        alert('Document deleted successfully!');
         setDocuments(documents.filter(d => d.id !== doc.id));
       } catch (error) {
         console.error('Error deleting document:', error);
